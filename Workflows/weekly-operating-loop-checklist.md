@@ -4,8 +4,8 @@ Use this checklist with `Workflows/weekly-operating-loop.md`.
 
 ## Scope
 
-- [ ] Confirm cwd is the My-OS repo root
-- [ ] State that My-OS is the private live cockpit
+- [ ] Confirm cwd is the AIPM-OS repo root
+- [ ] State that AIPM-OS is the personal AI PM portfolio lab
 - [ ] State whether git is available
 - [ ] If git is unavailable, use modified-time fallback and label it as fallback
 

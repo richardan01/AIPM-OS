@@ -1,11 +1,12 @@
 # Weekly operating loop
 
-**Purpose:** Keep My-OS useful as Richard's private live cockpit.
+**Purpose:** Keep AIPM-OS useful as Richard's personal AI PM portfolio lab.
 
-This workflow is the weekly control loop for the OS. It is not a public-template
-release check. It assumes Richard is using My-OS daily with Cursor and Claude
-cowork desktop, so private/local state is allowed, but runtime clutter and
-unreviewed structural drift must be surfaced before it becomes operational debt.
+This workflow is the weekly control loop for the personal lab. It is not a
+Product-Management_OS public-template release check. It assumes Richard is using
+a private working copy with Cursor and Claude cowork desktop, so private/local
+state is allowed, but runtime clutter and unreviewed structural drift must be
+surfaced before it becomes operational debt.
 
 ## Trigger
 
@@ -16,7 +17,7 @@ Run immediately when:
 - `Evals/`, `Agents/`, `.claude/skills/`, or `Workflows/` changed materially
 - New runtime tools or MCPs were added
 - A Claude cowork session created many files
-- Richard asks whether My-OS still operates cleanly
+- Richard asks whether AIPM-OS still operates cleanly
 
 ## Inputs
 
@@ -48,7 +49,7 @@ The runner must not:
 
 ## Procedure
 
-1. Confirm scope: this is `My-OS`, Richard's private live cockpit.
+1. Confirm scope: this is `AIPM-OS`, Richard's personal AI PM portfolio lab.
 2. Check whether git is available. If not, use modified-time fallback and say so.
 3. Group changed files by area:
    - Core OS: `AGENTS.md`, `CLAUDE.md`, `README.md`, `GOALS.md`
