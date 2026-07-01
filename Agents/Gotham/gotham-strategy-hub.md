@@ -2,7 +2,7 @@
 
 This folder is Bruce Wayne's domain — the multi-year career strategy, quarterly theses, narrative architecture, and target-list management.
 
-It is operationally separate from the day job (day-job work continues to live in `My-OS/Projects/`, `My-OS/Tasks/`, `My-OS/Meetings/`). Bruce Wayne thinks about the 24-month arc to a frontier-lab AI PM role. Alfred thinks about whether the Tuesday meeting prep is done.
+It is operationally separate from day-job work, which stays in private working context outside this public repo. Bruce Wayne thinks about the 24-month arc to a frontier-lab AI PM role. Alfred thinks about whether the Tuesday meeting prep is done.
 
 ## What lives here
 
