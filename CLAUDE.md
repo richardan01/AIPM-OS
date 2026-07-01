@@ -1,4 +1,4 @@
-# CLAUDE.md — Richard's My-OS
+# CLAUDE.md — Richard's AIPM-OS portfolio lab
 
 **[Your name]** — AI PM aspirant (mid-2027 mission: frontier lab — Anthropic / OpenAI / DeepMind / MAG7 AI orgs).
 
