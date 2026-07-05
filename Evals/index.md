@@ -12,7 +12,7 @@
 
 | Suite | Criteria | Pass threshold | Owned by | Last run |
 |---|---|---|---|---|
-| [[Evals/onboarding/onboarding-suite\|onboarding]] | 12 | ≥ 10/12 | [[Agents/Gotham/Computer/alfred\|Alfred]] | [2026-06-23](Evals/run-log.md) · `opus-4-8` · content evals PASS (0 ❌); ⚠ temporal 02/07 not run (no interactive runner) — not fully citable |
+| [[Evals/onboarding/onboarding-suite\|onboarding]] | 12 | ≥ 10/12 | [[Agents/Gotham/Computer/alfred\|Alfred]] | [2026-07-05](Evals/run-log.md) · content 2026-06-23 `opus-4-8` PASS (0 ❌) + temporal 02/07 2026-07-05 `sonnet-5` PASS (0 ❌, 1 ⚠) — citable; C7 (re-run scenario) still unexercised, coverage gap logged |
 | [[Evals/research-synthesis/research-synthesis-suite\|research-synthesis]] | 7 | ≥ 6/7 | [[Agents/Gotham/Computer/oracle\|Oracle]] | _not yet logged_ |
 | discovery-synthesis _(private companion suite — not shipped in this repo)_ | in progress | — | [[Agents/Gotham/Computer/oracle\|Oracle]] | _not yet logged_ |
 | [[Evals/regeval/regeval-suite\|regeval]] | binary (κ) | κ ≥ 0.80 | [[Agents/Gotham/Computer/lucius-fox\|Lucius Fox]] | [2026-06-28](Evals/run-log.md) · **BINARY collapse** (see [[Evals/regeval/discovery-pass-2026-06-28]]). Forward pass found 2 integrity defects: phantom held-out (FM-11, `gold_expansion`=dup of tuning set → old κ=0.661 was in-sample) + `unclear` fails IAA (FM-12, κ=0.48). Binary judge: **κ=1.000 in-sample (82)** + **κ=1.000 genuine held-out (36, 20 new regimes)** — clean-construct caveat; borderline+prod = next gap. Old 3-class 0.820 was Sonnet-4-5 API, doesn't reproduce on demo harness (FM-10). |
@@ -20,6 +20,12 @@
 | peer-review (meta-eval) | 5 | CITABLE (0 ❌) | [[Agents/Gotham/Computer/riddler\|Riddler]] | [2026-06-23](Evals/run-log.md) · `opus-4-8` r2 · ✅ CITABLE (post-fix; synthesis 4/4, clean cleared, PRD recall fixed) |
 | prd-readiness (meta-eval) | 4 | CITABLE (0 ❌) | [[Agents/Gotham/Computer/lucius-fox\|Lucius Fox]] | [2026-06-23](Evals/run-log.md) · `opus-4-8` r2 · ✅ CITABLE (post-fix; AI gates added, clean→READY 12/12) |
 | [[Evals/memory-consolidation/memory-consolidation-suite\|memory-consolidation]] | 5 | ≥ 4/5 (01+02 mandatory) | [[Agents/Gotham/Computer/alfred\|Alfred]] | 2026-06-20 · `opus-4-8` · PASS · P 100% / R 95.2% (provisional-measured) _(result file local — results/ is gitignored)_ |
+| build-review (meta-eval) | on disk | — | [[Agents/Gotham/Computer/lucius-fox\|Lucius Fox]] | _not yet logged_ |
+| go-nogo (meta-eval) | on disk | — | [[Agents/Gotham/Computer/bruce-wayne\|Bruce Wayne]] | _not yet logged_ |
+| research-sufficiency (meta-eval) | on disk | — | [[Agents/Gotham/Computer/oracle\|Oracle]] | _not yet logged_ |
+| monitoring | README only — not yet a graded suite | — | — | — |
+
+This table is the canonical suite registry. `Evals/evals-hub.md` shows only the small curated set of primary/active suites.
 
 ---
 
