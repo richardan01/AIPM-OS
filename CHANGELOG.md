@@ -25,7 +25,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 - **Adversarial review of the OS** (`/codex:adversarial-review`, 2026-07-05) — three parallel audits (structure, gate enforcement, skills/evals/memory). Reference/consistency fixes:
   - Three wrong thesis paths (`alfred`, `nightwing`, `henri-ducard` pointed at a non-existent `Bruce-Wayne/` directory) and Nightwing's non-existent write dirs → corrected to real paths
   - Vicki Vale model id `claude-sonnet-5` → `claude-sonnet-4-6` (matches the tier table)
-  - All 8 agent frontmatters normalized to `Batman Strategic Layer`
+  - All 8 agent frontmatters normalized to `Batman Strategic Layer`; retitled `gotham-strategy-hub.md` ("Bruce Wayne — Strategic Layer" → "Strategy Hub") so it no longer collides with the umbrella layer name; recorded *why* the layer is "Batman" (umbrella persona) vs. the "Bruce Wayne" member agent in `agent-system-architecture.md`
   - Removed references to unshipped skills (`/technical-depth-builder`, `/model-eval-design`, `/public-artifact-publishing`) and broken `batman/` wikilinks
   - Corrected the "ships only the eval trio" claim in `agent-system-architecture.md` (all 14 workers ship); reworded the Gordon and `MEMORY.md` lines to reflect what actually ships
   - Removed 5 phantom `Templates/*` rows from `Evals/_ci-map.md`; pointed `concepts-index` at the shipped `pm-decisions-log.template.md`

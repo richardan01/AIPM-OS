@@ -1,6 +1,6 @@
-# Bruce Wayne — Strategic Layer
+# Bruce Wayne — Strategy Hub
 
-This folder is Bruce Wayne's domain — the multi-year career strategy, quarterly theses, narrative architecture, and target-list management.
+This folder is Bruce Wayne's domain — the multi-year career strategy, quarterly theses, narrative architecture, and target-list management. (Bruce Wayne is one agent within the **Batman Strategic Layer**; this hub is his strategy domain, not the layer itself.)
 
 Private working context (personal contacts, employer-specific material) stays outside this public repo. Bruce Wayne thinks about the 24-month arc to a frontier-lab AI PM role. Alfred thinks about whether the Tuesday meeting prep is done.
 

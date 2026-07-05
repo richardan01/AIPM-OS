@@ -19,6 +19,8 @@ When you say **"Computer, [task]"**, the system routes to the right agent automa
 
 > **Note:** This template ships 8 of the 12 agents from the full Batman-layer design. Some agent files' Handoffs/"does NOT do" sections still reference the other 4 (Batman — high-stakes execution mode via `/cowl-up`, Robin — parallel drafting, Commissioner Gordon — network/warm-intro, Selina Kyle — offer negotiation) as handoff targets. Those aren't included here; the references illustrate the intended handoff design rather than pointing to files in this repo.
 
+> **Why "Batman Strategic Layer" and not "Bruce Wayne":** the layer is the umbrella for all 8 agents, and *Bruce Wayne* is already one of those agents (the strategist). Naming the umbrella "Batman" — the persona with no shipped agent of its own — keeps the layer name from colliding with a member agent. `CLAUDE.md` and `README.md` are canonical on this; agent `layer:` frontmatter matches them.
+
 ### Model complexity tiers
 
 | Tier | Model | When |
