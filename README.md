@@ -1,133 +1,116 @@
 # AI Product Lab
 
-![AI Product Management](https://img.shields.io/badge/AI%20Product%20Management-Working%20Lab-blue)
-![LLM Evals](https://img.shields.io/badge/LLM-Evals-purple)
-![RegEval](https://img.shields.io/badge/RegEval-Flagship%20Project-green)
-![Agentic Workflows](https://img.shields.io/badge/Agentic-Workflows-orange)
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Focus](https://img.shields.io/badge/focus-AI%20Product%20Management-blue)
+![Flagship](https://img.shields.io/badge/flagship-RegEval-green)
 
-A working lab for practicing AI Product Management with real eval discipline — LLM evals, agentic workflows, quality gates, and measurable product artifacts, built and run in the open.
+Hi — I'm Richard, and I'm learning to be an **AI product manager**: the person who decides what an AI product should do, and whether it's actually good enough to put in front of real people.
 
-**The problem it works on.** AI products are easy to demo and hard to trust. The demo is the first 10%; the rest is a clear user problem, a falsifiable metric, quality gates, human review, and an honest log of what failed and what fixed it. This repo is where that after-the-demo discipline gets practiced on real work instead of described in the abstract.
+This repo is my workshop for that. Instead of only reading about the job, I do it here in the open: I build small AI projects, I test them properly to see whether they really work, and I keep an honest logbook of what broke and how I fixed it.
 
-This is not a reusable PM workflow template — for that, see [PM Command Center](https://github.com/richardan01/PM-Command-Center). This is the applied lab: a flagship eval project, artifact quality gates, and eval loops, built and run in the open.
-
-The Batman / Bruce Wayne layer is just the routing metaphor — Batman for focused execution, Bruce Wayne for long-range strategy. It organizes the work; it isn't the point of it. The substance is the eval and product work below.
-
----
-
-## Start here
-
-- [`PROOF-OF-WORK.md`](PROOF-OF-WORK.md) — how the lab measures its own work: RegEval, the gates, and the run logs, and how they connect.
-- [`HOW-IT-WORKS.md`](HOW-IT-WORKS.md) — the architecture: agents, gates, evals, and how they compose.
-- [`Evals/regeval/regeval-suite.md`](Evals/regeval/regeval-suite.md) — the flagship RegEval methodology and acceptance criteria.
-- [`Evals/run-log.md`](Evals/run-log.md) — chronological eval and gate run history.
-- [`Projects/ralph/brief.md`](Projects/ralph/brief.md) — the RegEval/Ralph project brief.
-
-## What's inside
-
-- An eval loop built on falsifiable metrics with explicit acceptance bars.
-- Failure-mode tracking, with logged remediations and reruns.
-- Two mandatory review gates on every public artifact.
-- Claude Code used as the workflow runtime.
-- A run log that keeps what was measured, what failed, and what changed visible over time.
+If you've never opened a repo like this before, no problem. This page walks through what it is and how it fits together, in plain language — no code required.
 
 ---
 
-## What this is
+## What this is, in one minute
 
-AI Product Lab treats AI PM practice the way Karpathy treats autoresearch: one runner, one metric, a fixed time budget, a compounding log. Applied here, that means AI product work gets built, measured, reviewed, logged, and improved over time.
+Most AI demos look amazing for five minutes and then fall apart the moment you trust them with something real. The interesting part of the job isn't the demo. It's everything after: *Is it right? How often is it wrong? Can I prove it? And what do I do when it fails?*
 
-It is a lab and a working log — not a generic operating system, and not a template to fork.
+AI Product Lab is where I practise answering those questions on real projects. Three things happen here, over and over:
 
-The system runs on a single layer: the **Batman Strategic Layer** — 8 agents in `Agents/Gotham/Computer/` covering the day-to-day work (flagship build, writing, research, technical depth).
+- **I build** a small AI tool or workflow.
+- **I measure** whether it works — with numbers, not gut feel. (These measurements are called *evals*, short for evaluations.)
+- **I write down** what I learned, including the failures, so the knowledge adds up over time.
 
-## Naming clarification
+Build, measure, learn, repeat — and never quietly delete the parts that didn't work.
 
-This repo was formerly named AIPM-OS. The new name better reflects what it is: an AI Product Management lab focused on evals, agents, and measurable artifacts.
+## How it works
 
----
+Everything runs on one simple loop. A project goes around it again and again, becoming a little more trustworthy each lap:
 
-## Key components
+```mermaid
+flowchart LR
+    A["1 · Build<br/>a small AI tool"] --> B["2 · Measure<br/>does it actually work?"]
+    B --> C["3 · Review<br/>is it correct? is it clear?"]
+    C --> D["4 · Log<br/>what worked, what broke"]
+    D --> E["5 · Improve"]
+    E -->|"go around again"| A
+```
 
-### Gotham agent suite (`Agents/Gotham/Computer/`)
+A few rules turn this from a to-do list into something you can trust:
 
-8 Batman-character agents, each with a distinct domain and voice:
+- **The numbers decide, not me** — a project only counts as "working" when the measurements say so. I can't just declare it good enough.
+- **Nothing gets erased** — every result, especially the failures, is written down and kept. You can scroll back and watch the work actually improve, instead of seeing only a polished ending.
+- **Anything I publish is checked first** — before a write-up goes public, two automatic reviewers read it. One hunts for anything wrong or overstated; the other reads it like a stranger would and flags where it gets confusing. Both have to approve it.
 
-| Agent | Domain |
+### Under the hood
+
+If you like structure, the lab is built in three layers that stack on top of each other:
+
+| Layer | What it does | Where it lives |
+|---|---|---|
+| **1. Strategy** | Decides what to work on and why | `Agents/` |
+| **2. Execution** | The actual building and testing | `Projects/`, `Evals/` |
+| **3. Enforcement** | The quality checks that run automatically | `Workflows/`, `Tools/` |
+
+The layer I'm proudest of is enforcement. The quality checks aren't a promise I make to myself and forget — they're wired in so they *have* to run before anything ships. (For the technically curious: it's a Git hook that physically blocks publishing until both reviews pass.)
+
+The full architecture, folder by folder, is in **[`HOW-IT-WORKS.md`](HOW-IT-WORKS.md)**.
+
+## Why the Batman theme?
+
+Fair question. As you look around, you'll notice the "assistants" that help run the lab are all named after Batman characters. It's a memory trick, not a gimmick: each one is a focused helper with a single clear job, and the names make it easy to remember who does what.
+
+| Assistant | What they handle |
 |---|---|
-| Bruce Wayne | Career strategy, quarterly thesis, positioning |
-| Alfred | Daily ops, calendar, prep, accountability |
-| Lucius Fox | Build, prototype, MCP/skill authoring |
-| Oracle | Research, JD scans, hiring-manager recon |
-| Nightwing | Essays, posts, threads, talks |
-| The Riddler | Adversarial review (pre-publish gate) |
-| Henri Ducard | Technical-depth coaching and drilling |
-| Vicki Vale | Reader-voice review (pre-publish gate) |
+| **Bruce Wayne** | The big-picture strategy and direction |
+| **Alfred** | Day-to-day planning and prep |
+| **Lucius Fox** | Building and prototyping |
+| **Oracle** | Research and digging things up |
+| **Nightwing** | Writing — posts, essays, talks |
+| **The Riddler** | Poking holes in things before they go public |
+| **Henri Ducard** | Sharpening the technical depth |
+| **Vicki Vale** | Reading drafts the way a real reader would |
 
-The full design has 12 agents; 4 (network/negotiation/execution-mode/parallel-drafting specialists) are left out of this public repo. See the note in `Agents/agent-system-architecture.md` for how leftover references to them are handled.
+The last two — the Riddler and Vicki Vale — are the "two automatic reviewers" from the loop above.
 
-### RegEval — the flagship project (`Projects/ralph/`, `Evals/regeval/`)
+## The main project: RegEval
 
-An LLM-as-judge evaluation framework for regulated-domain compliance classification. It's where the eval discipline in this repo is applied end to end — the thing the lab is built around.
+If you only look at one thing, look at this.
 
-Three modules:
-1. **Provenance traces** — per-verdict run-lineage envelope (JSONL + human-readable cards)
-2. **Abstention as a first-class class** — judge abstains on ambiguous items; abstention rate is a metric, not an error
-3. **Human-vs-judge CLI** — live κ computation against a gold dataset; reconciles logged vs live results
+RegEval asks a simple but important question: **can you trust an AI to check whether something follows the rules?** Picture a compliance officer at a bank, reading documents to spot anything that breaks regulations — slow, expensive, easy to get wrong. Could an AI handle the first pass?
 
-**Current status (2026-06-29):** Binary judge (`binary-v1`) at κ=1.000 in-sample (N=82) + κ=1.000 genuine held-out (N=36, 20 unseen regimes). Clean-construct result — not yet production-validated. See `Evals/regeval/regeval-suite.md` for methodology and `Evals/run-log.md` for the full run history.
+You can't just *hope* the AI is right, so RegEval measures it. The AI makes its calls, those calls are compared against a human expert's answers, and it all boils down to one score: how often the two agree. If they almost always agree, the AI might be trustworthy. If they don't, you've learned something crucial — before anyone got hurt.
 
-### Quality gate pipeline (`Workflows/`, `Tools/`)
+There's an honesty story baked in, too. Early on I made a classic mistake: I accidentally graded the AI on examples it had effectively already seen, which makes any score look better than it really is. That slip-up is written up and kept in the repo on purpose, as a permanent reminder. Catching your own mistakes is the whole point.
 
-Every public artifact goes through two mandatory gates before shipping:
-- **Riddler** — adversarial review: "find every way this could be wrong or misleading"
-- **Vicki Vale** — reader-voice review: "would a stranger stick with this past the first paragraph"
+*Technical version: an LLM-as-judge framework for regulated-domain compliance classification, scored with Cohen's κ (agreement between the AI and human labels). Methodology and results are in [`Evals/regeval/regeval-suite.md`](Evals/regeval/regeval-suite.md).*
 
-Both must pass. A PreToolUse hook in `.claude/settings.json` runs `Tools/gate-check.sh`, which blocks writes to `Artifacts/` — and to any filename containing `-essay`, `-post`, or `-thread` — unless `.riddler-passed` + `.vicki-passed` markers are present and fresh (6h TTL). The gate verdicts themselves are committed (see `Evals/regeval/.riddler-passed`) so the review trail is inspectable.
+## Want to look around?
 
-### Eval discipline layer (`Evals/`, `.claude/agents/`)
+You don't need to read any code. Pick a starting point based on what you're curious about:
 
-Beyond the flagship: 8+ eval suites with planted-flaw inputs and answer keys, a severity taxonomy, an eval-CI regression sentinel, judge-calibration (TPR/TNR ≥ 0.9 before a judge is trusted), Hamel/Shankar-style error analysis, and author/grader-separated sub-agents (`eval-runner` may never read the answer keys `eval-grader` grades against).
+- **"Show me the big picture."** → [`HOW-IT-WORKS.md`](HOW-IT-WORKS.md)
+- **"What has this actually produced?"** → [`Evals/run-log.md`](Evals/run-log.md), the dated logbook of every test run
+- **"Tell me about the main project."** → [`Projects/ralph/brief.md`](Projects/ralph/brief.md)
 
-### Skill library (`.claude/skills/`)
+And here's what lives in each main folder:
 
-Reusable skill files for recurring workflows: `/peer-review`, `/prd-readiness`, `/judge-calibration`, `/error-analysis`, `/eval-ci`, and more. Each skill is a SKILL.md file with frontmatter, procedure, and output shape. The RegEval experiment loop and monthly memory consolidation are workflow specs (`Workflows/regeval-run.md`, `Workflows/memory-consolidation.md`), invoked by name rather than as slash commands.
+| Folder | What's inside |
+|---|---|
+| `Agents/` | The Batman-themed assistants and the overall strategy |
+| `Projects/` | The flagship build (RegEval, run by a loop I call "Ralph") |
+| `Evals/` | All the tests, the scores, and the logbook |
+| `Workflows/` | Step-by-step recipes, including the publishing checks |
+| `Tools/` | The script that enforces those checks |
+| `Knowledge/` | Notes and research I've collected along the way |
+| `Templates/` | Reusable document skeletons |
 
----
+## A couple of notes
 
-## How to adapt this
-
-This repo is intentionally personal and opinionated, but the pattern is portable:
-
-1. `Agents/Gotham/thesis-q3-2026.md` — your own quarterly thesis (mission, pillars, signposts)
-2. `CLAUDE.md` — your identity, routing rules, and quality gates
-3. `Agents/Gotham/Computer/` agent files — adapt voice samples to your own context
-4. `Projects/` — your flagship project (Ralph = RegEval here; name yours)
-5. `Evals/` — your own eval suites (keep the methodology; replace the domain)
-
-The Batman persona is the frame. The Karpathy compounding principle is the engine. For a reusable PM workspace rather than a personal working lab, start from [PM Command Center](https://github.com/richardan01/PM-Command-Center).
+- **This is a personal lab, not a product.** It's opinionated and shaped around how I work, so it isn't meant to be installed or reused as-is — but you're very welcome to look around and borrow ideas. If you want a reusable PM workspace instead, I keep that separately in [PM Command Center](https://github.com/richardan01/PM-Command-Center).
+- **It used to be called AIPM-OS.** Same project, clearer name.
 
 ---
 
-## Stack
-
-- **Claude Code** (CLI + agent SDK) — primary runtime
-- **Claude API** — `claude-sonnet-4-6` for most tasks; `claude-opus-4-8` for strategic depth
-- **Local git** — lab files versioned; eval result files gitignored
-
----
-
-## RegEval — deeper context
-
-The core research question: *can an LLM judge reliably classify regulatory compliance with agreement high enough to replace a human spot-checker?*
-
-The metric: **Cohen's κ** (judge vs human gold labels). Bar: κ ≥ 0.80, CI-lower ≥ 0.70.
-
-The integrity lesson embedded in the harness: a held-out validation set must be verified disjoint from the tuning set (by item ID + text) before any out-of-sample κ is cited. This exact failure occurred (FM-11) and is now a load-bearing anti-pattern in `Evals/regeval/regeval-suite.md`.
-
-See `Knowledge/Research/regeval-synthesis.md` for the full research synthesis.
-
----
-
-*A personal working lab — updated as the work happens.*
+*A personal working lab, updated as the work happens. Thanks for stopping by.*
