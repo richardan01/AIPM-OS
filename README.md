@@ -131,3 +131,5 @@ See `Knowledge/Research/regeval-synthesis.md` for the full research synthesis.
 ---
 
 *Built by an AI PM aspirant proving the thing they claim to understand.*
+
+<!-- dry-run test marker 2026-07-05, safe to remove -->
