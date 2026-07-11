@@ -7,8 +7,8 @@ grounded read on whether the *agent* (not just its final answer) is doing the ri
 
 ## Grounding
 
-Implements the two-phase agentic evaluation from **Shankar & Husain, _Evals for AI
-Engineers_** (O'Reilly, 2026) and their [evals FAQ](https://hamel.dev/blog/posts/evals-faq/),
+Implements the two-phase agentic evaluation from **Shankar & Husain**, *Evals for AI
+Engineers* (O'Reilly, 2026) and their [evals FAQ](https://hamel.dev/blog/posts/evals-faq/),
 "How to evaluate agentic workflows":
 
 > Two-phase approach: (1) end-to-end task success as a black box, (2) step-level

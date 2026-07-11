@@ -24,7 +24,7 @@ goal alignment).
 
 ## Why two phases
 
-Grounded in Shankar & Husain, _Evals for AI Engineers_ (2026) + their
+Grounded in Shankar & Husain, *Evals for AI Engineers* (2026) + their
 [evals FAQ](https://hamel.dev/blog/posts/evals-faq/): an agent scored on final output alone
 looks far better than it is, because the failure surface — bad tool arguments, dropped
 state, goal drift — is invisible at the output layer. So Phase 1 grades the outcome as a

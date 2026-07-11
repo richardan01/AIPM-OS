@@ -61,8 +61,8 @@ A fully worked run (seven verdicts + aggregate) is in
 
 ## What it's grounded in
 
-The methodology is a faithful implementation of **Shreya Shankar & Hamel Husain,
-_Evals for AI Engineers_** (O'Reilly, 2026) and their widely-read
+The methodology is a faithful implementation of **Shreya Shankar & Hamel Husain**,
+*Evals for AI Engineers* (O'Reilly, 2026) and their widely-read
 [evals FAQ](https://hamel.dev/blog/posts/evals-faq/) — error-analysis-first, binary metrics,
 application-specific (not generic) failure modes, calibrated judges (TPR/TNR ≥ 0.9), and the
 two-phase agentic-evaluation split. The meta-eval layer ("who grades the graders?") is

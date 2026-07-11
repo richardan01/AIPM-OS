@@ -9,7 +9,7 @@ and subjects its own quality gates to **planted-flaw meta-evals**, so the evalua
 to the same bar as the thing they evaluate.
 
 It is a faithful implementation of Shankar & Husain's **Analyze → Measure → Improve**
-lifecycle (_Evals for AI Engineers_, O'Reilly 2026; [evals FAQ](https://hamel.dev/blog/posts/evals-faq/)),
+lifecycle (*Evals for AI Engineers*, O'Reilly 2026; [evals FAQ](https://hamel.dev/blog/posts/evals-faq/)),
 **extended with a fourth concern — Audit the evaluators** — grounded in Shankar et al.,
 [*Who Validates the Validators?*](https://arxiv.org/abs/2404.12272) (UIST 2024).
 
