@@ -512,7 +512,7 @@ power; baseline, not validation.
 | Date | 2026-07-11 |
 | Suite | agent-harness (NEW — two-phase agentic eval) |
 | Model | grader `claude-sonnet-5` (7× eval-grader sub-agent) |
-| Commit SHA | branch `claude/agentic-evals-framework-gaps-j3j270` (suite introduced in this change) |
+| Commit SHA | `63dbe2e` (suite introduced; branch `claude/agentic-evals-framework-gaps-j3j270`) |
 | Runner | `scripts/trace_adapter.py` (Mode A — normalized a session; sample graded is synthetic) |
 | Grader | eval-grader sub-agent, one per eval, read-only on (trace + one criteria.md) |
 | Fixture(s) | `samples/coding-retry.json` (synthetic reference trace) |

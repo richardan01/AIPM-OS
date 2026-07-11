@@ -24,6 +24,9 @@ Usage:
 Options:
   --input PATH     source JSONL. Omit with --latest (claude-code only).
   --latest         pick the most-recently-modified session under ~/.claude/projects.
+                   Caveat: if a Claude Code session is running right now, that live
+                   file is usually the most recent — pass --input to grade a
+                   specific finished session.
   --suite NAME     destination suite; output lands in Evals/<suite>/_traces/files/.
   --trace-id ID    override the auto-assigned <prefix>-NNNN id.
   --out PATH       write to an explicit path instead of the suite _traces dir.
@@ -49,6 +52,19 @@ RETRIEVAL_TOOLS = {
     "Read", "Grep", "Glob", "WebFetch", "WebSearch",       # Claude Code
     "read_file", "grep", "search", "web_search", "fetch",  # codex-ish
 }
+
+# Claude Code harness plumbing that arrives as `user` turns WITHOUT an isMeta
+# flag (verified against a real session: command echoes and task notifications
+# are key-identical to genuine user messages). Filtered by leading tag only —
+# a real user message quoting one of these mid-text is kept.
+CLAUDE_PLUMBING_TAGS = (
+    "<local-command-caveat>", "<command-name>", "<local-command-stdout>",
+    "<system-reminder>", "<task-notification>",
+)
+
+
+def _is_plumbing(text):
+    return isinstance(text, str) and text.lstrip().startswith(CLAUDE_PLUMBING_TAGS)
 
 
 # ----------------------------------------------------------------------------
@@ -157,6 +173,11 @@ def adapt_claude_code(path):
         if obj.get("isSidechain"):
             skip("sidechain")
             continue
+        # Exclude harness plumbing (slash-command caveats, command stdout,
+        # system-reminders) — these are not user/assistant turns.
+        if obj.get("isMeta"):
+            skip("meta")
+            continue
         ts = obj.get("timestamp")
         if ts:
             first_ts = first_ts or ts
@@ -193,6 +214,9 @@ def adapt_claude_code(path):
             msg = obj.get("message") or {}
             content = msg.get("content")
             if isinstance(content, str):
+                if _is_plumbing(content):
+                    skip("meta")
+                    continue
                 if goal is None:
                     goal = content
                 turns.append({"i": len(turns), "role": "user", "text": content, "ts": ts})
@@ -206,10 +230,14 @@ def adapt_claude_code(path):
                             "ok": not bool(block.get("is_error")),
                         }
                     elif block.get("type") == "text":
+                        text = block.get("text", "")
+                        if _is_plumbing(text):
+                            skip("meta")
+                            continue
                         if goal is None:
-                            goal = block.get("text")
+                            goal = text
                         turns.append({"i": len(turns), "role": "user",
-                                      "text": block.get("text", ""), "ts": ts})
+                                      "text": text, "ts": ts})
         else:
             skip(typ or "unknown")
 
@@ -257,11 +285,11 @@ def adapt_codex(path):
         skipped[kind] = skipped.get(kind, 0) + 1
 
     for _, obj in _read_jsonl(path):
-        ts = obj.get("timestamp") or obj.get("ts")
+        payload = obj.get("payload") if isinstance(obj.get("payload"), dict) else obj
+        ts = obj.get("timestamp") or obj.get("ts") or payload.get("timestamp")
         if ts:
             first_ts = first_ts or ts
             last_ts = ts
-        payload = obj.get("payload") if isinstance(obj.get("payload"), dict) else obj
         kind = payload.get("type") or obj.get("type")
 
         # session header line

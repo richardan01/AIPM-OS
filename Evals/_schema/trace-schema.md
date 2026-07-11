@@ -44,7 +44,10 @@ One JSON object per file: `Evals/<suite>/_traces/files/<trace_id>.json`.
     "turn_count": 12,
     "tool_call_count": 35,
     "tool_error_count": 1,
-    "input_tokens": 1234,             // null if the harness does not record usage
+    "input_tokens": 1234,             // null if the harness does not record usage.
+                                      // Claude Code: non-cached input only — cache
+                                      // reads are excluded, so this understates
+                                      // true context size on cached sessions.
     "output_tokens": 5678,
     "wall_seconds": 184.4             // last_ts − first_ts; null if timestamps absent
   },

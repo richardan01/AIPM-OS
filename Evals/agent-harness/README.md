@@ -48,6 +48,7 @@ black box, and Phase 2 opens the box.
 | `protocol.md` | Run procedure (Mode A: real session · Mode B: fresh workflow run) |
 | `00-…/`–`06-…/criteria.md` | Binary pass criteria + `bad`/`sad` severity per eval |
 | `failure-transitions.md` | Transition matrix — where first failures cluster across traces |
+| `samples/` | Committed reference fixtures: a synthetic trace + answer key, and a Codex rollout for adapter regression checks |
 | `_public-evidence/` | Sanitized end-to-end runs that ship publicly (raw `_traces/` do not) |
 | `../_schema/trace-schema.md` | The normalized trace contract every adapter emits |
 | `../../scripts/trace_adapter.py` | claude-code / codex → normalized trace |

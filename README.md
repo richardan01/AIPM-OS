@@ -47,7 +47,7 @@ Attach to a session you already have and grade it:
 # 1. Normalize a real agent session into a trace
 #    Claude Code sessions live at ~/.claude/projects/<proj>/<session>.jsonl
 python3 scripts/trace_adapter.py claude-code --latest --suite agent-harness
-#    Codex: python3 scripts/trace_adapter.py codex --input ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl --suite agent-harness
+#    Codex: python3 scripts/trace_adapter.py codex --input "~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl" --suite agent-harness
 
 # 2. See what got captured (turns, tool_calls, retrievals, metrics)
 #    Evals/_schema/trace-schema.md
