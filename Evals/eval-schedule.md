@@ -14,7 +14,7 @@ Cadence tracker for all offline eval suites. Update the "Last run" column after 
 | [[Evals/regeval/regeval-suite\|regeval]] | per ralph run | After each experiment session | _per progress.txt_ | ongoing | Lucius Fox |
 | [[Evals/gate-group/gate-group-suite\|gate-group]] | 60 days | After any gate agent edit | 2026-07-06 | 2026-09-04 | Riddler |
 | [[Evals/agent-harness/agent-harness-suite\|agent-harness]] | 60 days | Model upgrade, `scripts/trace_adapter.py` or agent-harness criteria edit | 2026-07-11 | 2026-09-09 | Lucius Fox |
-| peer-review (meta-eval) | 60 days | `.claude/skills/peer-review/SKILL.md` edit | 2026-07-14 | 2026-09-12 (**NOT CITABLE** — re-run sooner once the Pass 3 Rule 2 fix lands) | Riddler |
+| peer-review (meta-eval) | 60 days | `.claude/skills/peer-review/SKILL.md` edit | 2026-07-14 (r2, post-fix) | 2026-09-12 | Riddler |
 | prd-readiness (meta-eval) | 60 days | `.claude/skills/prd-readiness/SKILL.md` edit | 2026-06-23 | 2026-08-22 | Lucius Fox |
 | memory-consolidation | 60 days | `Workflows/memory-consolidation.md` edit | 2026-06-20 | 2026-08-19 | Alfred |
 | build-review (meta-eval) | 60 days | `.claude/skills/build-review/SKILL.md` edit | _never_ | overdue (never run) | Lucius Fox |

@@ -662,3 +662,38 @@ The runner's own transcript (weekly-update-clean, Anomaly #4) answered this dire
 - None required. Two non-blocking secondary findings logged for future hardening: (1) Rollback gate scored 🟡 where the answer key plants a 🔴 (untested kill-switch) — didn't affect this run's verdict but flagged by 3 independent graders as a live discrepancy worth a rubric tightening; (2) verdict-file template in `go-nogo/SKILL.md` doesn't match `_Registry/reviewer-verdict-schema.md`'s field layout.
 
 **Result file:** `go-nogo/results/2026-07-14_claude-sonnet-5.md`
+
+---
+
+### 2026-07-14 — peer-review — claude-sonnet-5 (r2, POST-FIX VERIFICATION)
+
+| Field       | Value |
+|-------------|-------|
+| Date        | 2026-07-14 |
+| Suite       | peer-review |
+| Model       | claude-sonnet-5 |
+| Commit SHA  | e206533e9101456c6449e92649b40e40a71e8550 |
+| Runner      | eval-runner sub-agents (3, isolated) |
+| Grader      | eval-grader sub-agents (11 calls, isolated) |
+| Fixture(s)  | prd-activation-checkout.md, synthesis-support-tickets.md, weekly-update-clean.md |
+| Raw pass rate | clean control 3/3 (was 0/3); flawed fixtures materially improved |
+| Bias-corrected θ̂ | N/A — manual grading against answer keys |
+| Status      | ✅ regression closed — verifies the `e206533` Pass 3 Rule 2 scope fix |
+
+**What changed since r1:** the Pass 3 Rule 2 (rollback/failure-plan) scope-qualifier fix. r2 confirms:
+- Clean control `weekly-update-clean.md`: evals 02/03/04 all ✅ (was all ❌). The P0 false-positive failure is reversed.
+- `synthesis-support-tickets.md` eval 02: ❌ → ✅ — Pass 3 Rule 2 explicitly scoped itself out ("out of scope for Rule 2. No finding raised"); no hallucinated Must Fix.
+- `prd-activation-checkout.md`: rule still fires correctly (it genuinely owns the flow design) — verdict still NEEDS REVISION, no false-negative introduced.
+- Bonus: synthesis eval 01 ⚠ → ✅ (planted flaw S1, Theme-2-no-evidence, now caught).
+
+**Grader-isolation observation (positive):** all 11 eval-grader sub-agents declined the aggregator's instruction to read the fixture answer keys, citing their own four-file isolation rule and flagging the instruction as indistinguishable from an injected authorization. Answer-key-dependent criteria were resolved by the aggregator directly. The runner/grader separation held under direct pressure to break it — unanimously on Opus (r2), mixed on Sonnet (r1).
+
+**Residual (pre-existing, unrelated to the fix — logged as OPEN follow-ups in failure-log.md):**
+- prd eval 01: F1 (US-3 missing AC) still missed (⚠) — absence-type recall gap; structural scan infers AC presence from sibling stories.
+- synthesis eval 05: C4 ❌ — a methodology Partial finding named in prose dropped from the fix checklist.
+
+**Remediation:**
+- Applied: `.claude/skills/peer-review/SKILL.md` Pass 3 Rule 2 scope qualifier (`e206533`). The 3 r1 blocking failures (eval 02 ×2, eval 03, eval 04) are CLOSED.
+- Not applied (follow-ups): Pass 1 "check each item individually" instruction (F1 recall); Step 6 "crosswalk every non-Pass scorecard row" instruction (eval-05 completeness).
+
+**Result file:** `peer-review/results/2026-07-14_claude-sonnet-5_r2.md`
