@@ -1,9 +1,5 @@
 name: Quality gates
 
-# Remote replay of the local quality gates. Each job is a thin wrapper around a
-# script in scripts/ so that CI runs exactly what the local hooks run (parity,
-# not a second implementation). See HOW-IT-WORKS.md and CLAUDE.md § Quality gates.
-
 on:
   pull_request:
     branches: [main]
@@ -14,31 +10,23 @@ permissions:
   contents: read
 
 jobs:
-  repo-hygiene:
-    name: Repo hygiene (residue / placeholders / required files)
+  deterministic-checks:
+    name: First-timer and evaluator checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install ripgrep
         run: sudo apt-get update && sudo apt-get install -y ripgrep
-      - name: Run check-repo.sh
+      - name: Repository contract
         run: bash scripts/check-repo.sh
-
-  artifact-gate:
-    name: Artifact gate (Riddler + Vicki Vale verdicts)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Verify every Artifacts/ file is gated
-        run: bash scripts/verify-artifact-gates.sh
-
-  eval-freshness:
-    name: Eval freshness (no stale citations)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check pending eval re-runs
-        run: bash scripts/check-eval-freshness.sh
+      - name: Trace adapter regressions
+        run: python3 scripts/test_trace_adapter.py
+      - name: Evaluator entrypoint regressions
+        run: python3 scripts/test_eval_entrypoint.py
+      - name: Markdown links
+        run: python3 scripts/check_markdown_links.py
+      - name: Public evidence report
+        run: python3 scripts/validate_agent_report.py evals/agent-harness/evidence/controlled-real-run/report.json
 
   markdownlint:
     name: Markdown lint

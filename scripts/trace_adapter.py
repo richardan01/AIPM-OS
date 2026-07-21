@@ -3,7 +3,7 @@
 Trace adapter — normalize agent-harness session logs into the eval trace schema.
 
 Reads the JSONL a coding/agent harness writes to disk and emits a single
-normalized trace JSON per session, conforming to Evals/_schema/trace-schema.md.
+normalized trace JSON per session, conforming to evals/_schema/trace-schema.md.
 This is what turns "attach to Claude Code / Codex" from a slogan into an input
 the agent-harness eval suite can actually grade.
 
@@ -27,7 +27,7 @@ Options:
                    Caveat: if a Claude Code session is running right now, that live
                    file is usually the most recent — pass --input to grade a
                    specific finished session.
-  --suite NAME     destination suite; output lands in Evals/<suite>/_traces/files/.
+  --suite NAME     destination suite; output lands in evals/<suite>/_traces/files/.
   --trace-id ID    override the auto-assigned <prefix>-NNNN id.
   --out PATH       write to an explicit path instead of the suite _traces dir.
   --stdout         print the normalized JSON to stdout instead of writing a file.
@@ -312,14 +312,9 @@ def adapt_codex(path):
     not a flag parser — it will misclassify a destructive invocation like
     `find . -delete` as retrieval since it only looks at the leading verb.
 
-    Codex real-rollout validation: NOT yet validated against a local file — this
-    environment has no Codex CLI installed and no ~/.codex directory (confirmed via
-    `which codex` + filesystem search), so no real rollout was available to test
-    against. Repro recipe for a future session with Codex CLI access: (1) install
-    Codex CLI, (2) run one real session (`codex exec "<simple task>"`), (3) locate
-    ~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl, (4) run this adapter against it,
-    (5) confirm skipped_lines.unknown == 0, reconciling any nonzero bucket by
-    updating the kind-matching branches below.
+    The mapping is regression-tested against the committed Codex sample format.
+    Harness formats can change, so preflight rejects any capture whose
+    `skipped_lines.unknown` count is non-zero instead of silently grading it.
     """
     turns, tool_calls, results_by_id = [], [], {}
     goal, final_output = None, ""
@@ -396,7 +391,7 @@ def _repo_root():
 
 def _next_trace_id(suite):
     prefix = "".join(w[0] for w in suite.split("-"))[:3] or suite[:2]
-    files = _repo_root() / "Evals" / suite / "_traces" / "files"
+    files = _repo_root() / "evals" / suite / "_traces" / "files"
     n = 0
     if files.is_dir():
         for f in files.glob(f"{prefix}-*.json"):
@@ -446,7 +441,7 @@ def main():
         print(payload)
     else:
         out = Path(args.out) if args.out else (
-            _repo_root() / "Evals" / args.suite / "_traces" / "files" / f"{trace['trace_id']}.json")
+            _repo_root() / "evals" / args.suite / "_traces" / "files" / f"{trace['trace_id']}.json")
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(payload, encoding="utf-8")
         m = trace["metrics"]

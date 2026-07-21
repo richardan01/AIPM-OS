@@ -1,148 +1,153 @@
 # AI Product Lab
 
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
-![Flagship](https://img.shields.io/badge/flagship-RegEval-green)
-![Grounding](https://img.shields.io/badge/grounded_in-Shankar_%26_Husain-blue)
+![Primary%20surface](https://img.shields.io/badge/primary-agent%20trajectory%20eval-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-**A grounded way to evaluate agentic products — point it at a real Claude Code, Codex, or
-chatbot session and get a graded read on whether the *agent* did the right thing, not just
-whether its final answer looked good.**
+**A public AI product-management proof-of-work lab for evaluating whether an agent did the
+right thing—not only whether its final answer looked convincing.**
 
----
+AI Product Lab reads a real Claude Code or Codex session, turns it into a normalized trace,
+and grades both task success and the trajectory that produced it. The method is local and
+Markdown-native; Claude Code is the current grading runner.
 
-## The problem
+## What the lab evaluates
 
-Product managers are shipping agentic products — chatbots, copilots, coding harnesses,
-multi-step agents — with no practical way to tell if they actually work. The demo looks
-great for five minutes; then the agent picks the wrong tool, hallucinates an argument, drops
-a constraint the user gave three turns ago, or quietly drifts off the task. **A check that
-only reads the final answer can't see any of that** — agents graded on final output alone
-pass far more cases than a look at the full trajectory reveals.
+An agent can produce a plausible answer while choosing the wrong tool, guessing parameters,
+forgetting a constraint, or recovering badly from an error. The active `agent-harness` suite
+checks seven things:
 
-The engineering tools that measure this (LangSmith, Braintrust) assume you're an engineer
-instrumenting your own SDK. The academic agent benchmarks don't touch your product. So most
-PM teams fall back on vibes.
+| Phase | Question |
+|---|---|
+| Task success | Did the final result actually satisfy the user's goal? |
+| Tool choice | Did the agent use the right tools at the right moments? |
+| Parameter extraction | Were arguments grounded in the session rather than guessed? |
+| Error recovery | Did the agent adapt after failures? |
+| Context retention | Did it preserve earlier facts and constraints? |
+| Efficiency | Did it avoid redundant calls and loops? |
+| Goal alignment | Did it stay focused on the requested outcome? |
 
-AI Product Lab is the answer to *"okay, but how do I actually evaluate my agent?"* — a
-method a PM can run, grounded in the field's most-cited applied-eval work.
+Every finding is tied to evidence and marked `bad` (blocks trust) or `sad` (recoverable
+friction). One trace is one data point, not a success rate.
 
-## What it does
+## See the evidence in three minutes
 
-Two things, one loop:
+1. [Controlled real-session report](evals/agent-harness/evidence/controlled-real-run/aggregate.md)
+   — a real Codex tool-use run on a public toy task, reviewed across all seven axes.
+2. [Synthetic tutorial report](evals/agent-harness/evidence/2026-07-11_sample-coding-retry.md)
+   — the deterministic example used to teach the scorecard.
+3. [RegEval integrity case study](evals/regeval/discovery-pass-2026-06-28.md) — the lab found
+   that its supposed held-out set was contaminated, invalidated the claim, and rebuilt the
+   measurement approach.
 
-1. **Grades agent trajectories.** The [`agent-harness`](Evals/agent-harness/) suite takes a
-   real session and scores it in two phases — **(1)** did it accomplish the task (black
-   box), and **(2)** six step-level axes: tool choice, parameter extraction, error recovery,
-   context retention, efficiency, and goal alignment. Every criterion is binary; every
-   failure is tagged `bad` (blocks) or `sad` (recoverable).
-2. **Runs the full eval lifecycle around it** — error analysis on real traces, calibrated
-   LLM-as-judge, offline suites, meta-evals that grade the graders, and weekly monitoring —
-   so a workflow moves from "seems fine" to "measured."
+## Try it in 15 minutes
 
-## The 15-minute quickstart
-
-Attach to a session you already have and grade it:
+Requirements: Python 3.10+ and Claude Code. No Python packages are required for trace
+normalization.
 
 ```bash
-# 1. Normalize a real agent session into a trace
-#    Claude Code sessions live at ~/.claude/projects/<proj>/<session>.jsonl
-python3 scripts/trace_adapter.py claude-code --latest --suite agent-harness
-#    Codex: python3 scripts/trace_adapter.py codex --input "~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl" --suite agent-harness
-
-# 2. See what got captured (turns, tool_calls, retrievals, metrics)
-#    Evals/_schema/trace-schema.md
-
-# 3. Grade it — one eval-grader per criterion, author/grader separation enforced
-#    Follow Evals/agent-harness/protocol.md (Mode A)
+git clone https://github.com/richardan01/AI-Product-Lab.git
+cd AI-Product-Lab
+claude
 ```
 
-A fully worked run (seven verdicts + aggregate) is in
-[`Evals/agent-harness/_public-evidence/`](Evals/agent-harness/_public-evidence/).
+Inside Claude Code, run the safe sample first:
 
-## What it's grounded in
-
-The methodology is a faithful implementation of **Shreya Shankar & Hamel Husain**,
-*Evals for AI Engineers* (O'Reilly, 2026) and their widely-read
-[evals FAQ](https://hamel.dev/blog/posts/evals-faq/) — error-analysis-first, binary metrics,
-application-specific (not generic) failure modes, calibrated judges (TPR/TNR ≥ 0.9), and the
-two-phase agentic-evaluation split. The meta-eval layer ("who grades the graders?") is
-grounded in Shankar et al., [*Who Validates the Validators?*](https://arxiv.org/abs/2404.12272)
-(UIST 2024).
-
-## What's different here
-
-This is **not** another trajectory-tracing tool — LangSmith and Braintrust already do that,
-and better, for engineers. The bet is different:
-
-- **Methodology-first, not dashboard-first.** The value is the discipline (error analysis →
-  calibrated judge → meta-eval → monitoring), not a UI.
-- **Meta-evals that grade the graders.** The lab's own quality gates are themselves eval'd
-  with planted-flaw fixtures and answer keys. A gate that misses a known blocker, or flunks
-  clean work, fails its own suite.
-- **Attach to the harness you already use.** No SDK instrumentation — read the JSONL Claude
-  Code and Codex already write to disk.
-- **Local and Markdown-native.** The whole operating surface is files in a repo. Nothing to
-  host, nothing to send anywhere.
-
-Full architecture and the loop diagram: **[`AGENTIC-EVAL-FRAMEWORK.md`](AGENTIC-EVAL-FRAMEWORK.md)**.
-
-## The loop
-
-```mermaid
-flowchart LR
-    A["1 · Build<br/>an AI workflow or agent"] --> B["2 · Capture<br/>real traces"]
-    B --> C["3 · Measure<br/>two-phase eval + gates"]
-    C --> D["4 · Review<br/>correct? clear?"]
-    D --> E["5 · Log<br/>what worked, what broke"]
-    E --> F["6 · Improve<br/>failures become fixtures"]
-    F -->|"go around again"| A
+```text
+/evaluate-agent-session sample
 ```
 
-Three rules turn this from a to-do list into something trustworthy:
+To grade your own completed session:
 
-- **The numbers decide** — a workflow counts as "working" only when the measurements say so.
-- **Nothing gets erased** — every result, especially failures, is kept, so you can watch the
-  work actually improve.
-- **Anything published is checked first** — two automated reviewers (adversarial + reader-voice)
-  must both approve before a public artifact ships.
+```text
+/evaluate-agent-session /absolute/path/to/session.jsonl --harness claude-code
+/evaluate-agent-session /absolute/path/to/rollout.jsonl --harness codex
+```
 
-## The flagship: RegEval
+Before a private trace is graded, the command shows the selected file and asks you to confirm
+the privacy disclosure. Raw traces and private reports are gitignored.
 
-**Can you trust an AI to check whether something follows the rules?** RegEval is an
-LLM-as-judge framework for regulated-domain compliance classification, scored with Cohen's κ
-(agreement between the AI and a human expert). It also carries an honesty story on purpose:
-early on it hit the classic contamination trap — graded on examples it had effectively
-already seen — and that incident is written up and kept in the repo as a permanent reminder.
-Methodology and results: [`Evals/regeval/regeval-suite.md`](Evals/regeval/regeval-suite.md).
+For manual normalization without grading:
 
-## How the repo is organized
+```bash
+python3 scripts/trace_adapter.py claude-code --input /path/to/session.jsonl --suite agent-harness
+python3 scripts/trace_adapter.py codex --input /path/to/rollout.jsonl --suite agent-harness
+```
 
-Three layers (full tour in [`HOW-IT-WORKS.md`](HOW-IT-WORKS.md)):
+## How the repository is organized
 
-| Layer | What it does | Where |
-|---|---|---|
-| **Strategy** | Decides what to work on and why | `Agents/` |
-| **Execution** | The building and the measuring | `Projects/`, `Evals/` |
-| **Enforcement** | Quality checks wired in as Git hooks, not habits | `Workflows/`, `Tools/` |
-
-> **Why the Batman names?** The helper agents that run the lab are named after Batman
-> characters (Bruce Wayne = strategy, Lucius Fox = building, Oracle = research, the Riddler
-> and Vicki Vale = the two pre-publish reviewers, …). It's a memory trick — each is a focused
-> helper with one job — not a gimmick. See [`HOW-IT-WORKS.md`](HOW-IT-WORKS.md).
-
-## Where to start
-
-| Curious about | Go to |
+| Path | Start here when you want to… |
 |---|---|
-| The framework and the loop | [`AGENTIC-EVAL-FRAMEWORK.md`](AGENTIC-EVAL-FRAMEWORK.md) |
-| Grading an agent session | [`Evals/agent-harness/`](Evals/agent-harness/) |
-| What it's actually produced | [`Evals/run-log.md`](Evals/run-log.md) — the dated logbook |
-| The flagship build | [`Projects/ralph/brief.md`](Projects/ralph/brief.md) |
+| [`docs/`](docs/) | Learn the method, architecture, privacy model, and design case studies |
+| [`evals/`](evals/) | Inspect the active agent-harness and RegEval evidence |
+| [`scripts/`](scripts/) | Normalize traces, create N-1 fixtures, and run deterministic checks |
+| [`.claude/`](.claude/) | See the one-command runner and isolated grader contract |
 
-## Honest status
+The complete earlier personal PM operating system—including Gotham agents, workflows,
+onboarding, tasks, and meta-eval suites—is preserved at
+[`ai-product-lab-os-v1`](https://github.com/richardan01/AI-Product-Lab/tree/ai-product-lab-os-v1).
+It is historical evidence, not the current product surface.
 
-This is a faithful implementation of Shankar & Husain's eval lifecycle, **extended for
-agentic harnesses** — not a finished product and not "the most grounded evals tool." Harness
-support today: **claude-code** (verified against a real session), **codex** (documented
-format, validate on first real rollout), **cowork** (planned). The claim the repo will earn,
-not assert, is measured in public evidence — which is why the worked runs live in the repo.
+## Learn the method
+
+The [guided learning path](docs/learn.md) offers 10-minute, 30-minute, 60-minute, and two-hour
+routes. The short version is:
+
+```text
+real session → normalized trace → isolated graders → aggregate verdict
+             → failure analysis → new fixture → rerun
+```
+
+The design combines two compounding patterns:
+
+- **Knowledge compounds:** sources become maintained synthesis, indexes, and logs rather than
+  being rediscovered from scratch.
+- **Experiments compound:** one falsifiable metric, fixed scope, fixed budget, keep/discard,
+  and an append-only record.
+
+See [architecture and method](docs/architecture.md) for the Karpathy-inspired design and its
+limits.
+
+## The flagship case study: RegEval
+
+RegEval asks whether an LLM judge can classify regulated-domain compliance examples in
+agreement with human labels. Its most important result is not a headline score—it is the
+documented discovery that an early held-out claim was invalid.
+
+The public clone includes the scorer, historical experiment lineage, and a small synthetic
+demo dataset. The later private 36-item held-out set is not published, so its historical score
+is **not independently reproducible from this repository**. Start with the
+[RegEval case-study guide](evals/regeval/README.md).
+
+## Capability and limitation table
+
+| Capability | Status |
+|---|---|
+| Normalize Claude Code sessions | Adapter regression-tested against the committed format |
+| Normalize Codex rollouts | Verified against a controlled real run and sample format |
+| Grade through one Claude Code command | Shipped |
+| Run the grader directly in Codex | Not shipped |
+| Cowork trace support | Planned; format unconfirmed |
+| Hosted dashboard or production monitoring | Not provided |
+| Fully reproducible historical RegEval held-out score | Not provided; private data excluded |
+| Autonomous public RegEval loop | Design case study only; no public unattended driver |
+
+## Privacy
+
+No hosted observability platform or SDK is required. Trace files and reports stay in local,
+gitignored directories unless you deliberately sanitize and publish them. Content selected
+for LLM grading is still processed by your chosen inference provider. Read the full
+[privacy model](docs/privacy.md) before grading a work session.
+
+## What this is not
+
+- It is not a reusable personal PM workspace; use
+  [PM Command Center](https://github.com/richardan01/PM-Command-Center) for that.
+- It is not a replacement for production observability platforms such as LangSmith or
+  Braintrust.
+- It is not evidence that one clean trace proves an agent is reliable.
+- It is not a finished cross-provider product.
+
+## License
+
+MIT. You may study, reuse, and adapt the method with attribution. See [LICENSE](LICENSE).
