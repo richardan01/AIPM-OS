@@ -8,6 +8,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). This pr
 
 ## [Unreleased]
 
+### 2026-07-21 — First-timer simplification
+
+AI Product Lab now presents one usable product (`agent-harness`) and one flagship case study
+(`regeval`). The former personal PM operating system is preserved at the immutable
+`ai-product-lab-os-v1` tag instead of being carried as a large archive on `main`.
+
+| Previous path | Current destination |
+|---|---|
+| `Evals/agent-harness/` | `evals/agent-harness/` |
+| `Evals/regeval/` | `evals/regeval/` |
+| `Evals/_schema/` | `evals/_schema/` |
+| `Evals/severity-taxonomy.md` | `evals/severity-taxonomy.md` |
+| `Agents/Gotham/` | `docs/case-studies/gotham.md` (summary); full implementation at the version tag |
+| `Knowledge/` and wiki skills | `docs/architecture.md` (method summary); full implementation at the version tag |
+| PM workflows, tasks, templates, artifacts, onboarding, and meta-eval suites | Removed from `main`; full implementation at the version tag |
+
+Added the `/evaluate-agent-session` Claude Code interface, private-trace confirmation,
+strict normalization preflight, seven-grader report schema, controlled real evidence,
+synthetic RegEval demo, MIT license, and first-timer CI checks.
+
 ### Added
 - `AGENTIC-EVAL-FRAMEWORK.md` — the eval-loop framework manifesto: problem, loop design, architecture layers, metrics, and portfolio framing (consolidated from PM Command Center)
 - `GEMINI.md` — harness-neutral entry point for Gemini CLI; the lab now routes Claude Code and Gemini CLI to the same configuration surface

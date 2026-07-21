@@ -1,45 +1,25 @@
-# Local / personal-private — never include (folder READMEs are tracked; contents are not)
-Knowledge/People/*
-!Knowledge/People/README.md
-Knowledge/Reference/*
-!Knowledge/Reference/README.md
-Knowledge/Concepts/pm-decisions-log.md
-Meetings/
-Tasks/follow-ups.md
-Agents/_archive/
+# Private traces and reports
+evals/*/_traces/
+evals/*/results/
 
-# Auto-memory (may contain private session facts)
+# RegEval working datasets. Only explicitly committed demo data ships.
+evals/regeval/inputs/
+evals/regeval/experiments/.loop-status
+evals/regeval/experiments/.preds/*.local.jsonl
+
+# Legacy local/private OS state may remain in an existing checkout but is not public main.
+Knowledge/
+Meetings/
+Tasks/
+Agents/_archive/
 .claude/agent-memory/
 
-# Eval results + primary datasets (private working copies — gitignored by design)
-Evals/*/results/
-Evals/*/inputs/*.jsonl
-# gold.jsonl ships (100-item in-sample set = same content as inputs/snapshots/2026-06-28_gold_pre-split.jsonl)
-!Evals/regeval/inputs/gold.jsonl
-Evals/memory-consolidation/inputs/*/
-# Raw captured traces = private working copies (may contain unsanitized session
-# content). Only the sanitized Evals/*/_public-evidence/ tier ships.
-Evals/*/_traces/
-!Evals/*/_public-evidence/
-
-# Python bytecode
+# Runtime and local tooling
 __pycache__/
 *.pyc
-
-# Live publish-gate markers — runtime state, never commit. A committed marker
-# gets a fresh mtime on every checkout, permanently arming the gate.
-# (Per-artifact verdict files like Evals/regeval/.riddler-passed are audit
-# trail and DO ship — only the _Registry/ live markers are excluded.)
-_Registry/.riddler-passed
-_Registry/.vicki-passed
-_Registry/.vicki-bounced
-
-# Runtime / local
 .DS_Store
 *.local
 settings.local.json
 *.bak
 .obsidian/
-
-# Private residue term list for scripts/check-repo.sh — never commit
-scripts/residue-terms.local
+node_modules/

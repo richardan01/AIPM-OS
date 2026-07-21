@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Product Lab agent evaluation report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "trace_id",
+    "run_kind",
+    "grader_runner",
+    "source_harness",
+    "task_success",
+    "overall_verdict",
+    "bad_count",
+    "sad_count",
+    "axes",
+    "recommendation"
+  ],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "trace_id": { "type": "string", "minLength": 1 },
+    "run_kind": { "enum": ["synthetic", "controlled-real", "private"] },
+    "grader_runner": { "enum": ["claude-code", "codex-review"] },
+    "source_harness": { "enum": ["claude-code", "codex"] },
+    "task_success": { "enum": ["pass", "fail", "partial", "insufficient-evidence"] },
+    "overall_verdict": { "enum": ["pass", "fail", "partial", "insufficient-evidence"] },
+    "bad_count": { "type": "integer", "minimum": 0 },
+    "sad_count": { "type": "integer", "minimum": 0 },
+    "axes": { "type": "array", "minItems": 7, "maxItems": 7 },
+    "recommendation": { "type": "string", "minLength": 1 }
+  }
+}

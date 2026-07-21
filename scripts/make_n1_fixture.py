@@ -5,13 +5,13 @@ make_n1_fixture — truncate a normalized trace at its first error → an N-1 fi
 Shankar & Husain's N-1 protocol: to regression-test a failure, don't replay the whole
 session — capture the trajectory *up to the turn before the failure* and re-run just the
 next turn against the target. This script produces that prefix from a normalized trace
-(Evals/_schema/trace-schema.md). Re-running the next turn is target-dependent and out of
+(evals/_schema/trace-schema.md). Re-running the next turn is target-dependent and out of
 scope here (for repo workflows, feed the prefix to eval-runner).
 
 No API key, no network, stdlib only.
 
 Usage:
-  python3 scripts/make_n1_fixture.py --trace Evals/agent-harness/_traces/files/ah-0001.json
+  python3 scripts/make_n1_fixture.py --trace evals/agent-harness/_traces/files/ah-0001.json
   python3 scripts/make_n1_fixture.py --trace <t>.json --error-index 5   # explicit tool_call index
   python3 scripts/make_n1_fixture.py --trace <t>.json --stdout
 

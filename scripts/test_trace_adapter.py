@@ -4,13 +4,13 @@ Regression coverage for trace_adapter.py and make_n1_fixture.py.
 
 No test framework — this repo has none (no tests/ dir, no pytest/unittest, no
 python dependency manifest anywhere). Matches the existing convention
-(Evals/regeval/*.py's informal `assert` guards): stdlib-only, assert-based,
+(evals/regeval/*.py's informal `assert` guards): stdlib-only, assert-based,
 prints one PASS/FAIL line per case, exits 1 if anything failed.
 
 Run: python3 scripts/test_trace_adapter.py
 
 Focus: tool_calls[].turn_index semantics (forward-pointing, not backward-
-referencing — see Evals/_schema/trace-schema.md), N-1 truncation edge cases,
+referencing — see evals/_schema/trace-schema.md), N-1 truncation edge cases,
 plumbing/sidechain filtering, the goal-lock fix, and the Codex shell-retrieval
 heuristic. Also smoke-tests the two committed sample fixtures so a future
 edit that regresses their behavior is caught.
@@ -27,7 +27,7 @@ import trace_adapter as ta          # noqa: E402
 import make_n1_fixture as n1        # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SAMPLES = REPO_ROOT / "Evals" / "agent-harness" / "samples"
+SAMPLES = REPO_ROOT / "evals" / "agent-harness" / "samples"
 
 
 def _write(tmpdir, name, lines):
